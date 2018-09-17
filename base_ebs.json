@@ -1,0 +1,41 @@
+{
+  "variables": {
+    "name": "EBS_BASE_AMI",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+    "source_ami": "ami-c58c1dd3",
+    "aws_region": "{{env `AWS_REGION`}}"
+
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `aws_region`}}",
+    "source_ami": "{{user `source_ami`}}",
+    "force_deregister": "true",
+    "force_delete_snapshot": "true",
+    "instance_type": "t2.micro",
+    "communicator": "ssh",
+    "ssh_username": "ec2-user",
+    "ami_name": "{{user `name`}}"
+  }],
+  "provisioners":[
+    {
+      "type": "shell",
+      "inline": "sudo yum -y update"
+    },
+    {
+      "type": "shell",
+      "inline": "sudo yum install -y epel-release"
+    },
+    {
+      "type": "shell",
+      "inline": "sudo yum install -y php php-mysql php-fpm"
+    },
+    {
+      "type": "shell",
+      "inline": ["sudo yum install -y nginx","sudo chkconfig nginx on", "sudo service nginx start"]
+    }
+  ]
+}
