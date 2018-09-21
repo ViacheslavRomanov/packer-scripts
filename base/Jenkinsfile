@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('jenkins_aws_access_key')
+        AWS_SECRET_ACCESS_KEY = credentials('jenkins_aws_secret_key')
+        AWS_REGION = "${AWS_REGION}"
+    }
+    stages {
+        stage('Checkout'){
+            steps {
+                checkout scm
+            }
+        }
+        stage('Validate configuration'){
+            steps {
+                dir ('base'){
+                    sh 'hcpacker validate base_ebs.json'
+                }
+            }
+        }
+        stage('Create base image'){
+            steps {
+                dir ('base'){
+                    sh 'hcpacker build base_ebs.json'
+                }
+            }
+        }
+    }
+}

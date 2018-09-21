@@ -1,8 +1,8 @@
 {
   "variables": {
-    "name": "EBS_BASE_AMI",
-    "aws_access_key": "{{env `AWS_ACCESS_KEY`}}",
-    "aws_secret_key": "{{env `AWS_SECRET_KEY`}}",
+    "name": "APP_BASE_AMI",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
     "source_ami": "ami-c58c1dd3",
     "aws_region": "{{env `AWS_REGION`}}"
 
@@ -32,6 +32,10 @@
     {
       "type": "shell",
       "inline": "sudo yum install -y php php-mysql php-fpm"
+    },
+    {
+      "type": "shell",
+      "inline": "sudo yum install -y java-1.8.0-openjdk-devel"
     },
     {
       "type": "shell",
