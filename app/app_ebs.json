@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "name": "APP_PROD_AMI",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_region": "{{env `AWS_REGION`}}"
+
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "{{user `aws_region`}}",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "APP_BASE_AMI*",
+        "root-device-type": "ebs"
+      },
+      "owners": [
+        "034741567285"
+      ],
+      "most_recent": true
+    },
+    "force_deregister": "true",
+    "force_delete_snapshot": "true",
+    "instance_type": "t2.micro",
+    "communicator": "ssh",
+    "ssh_username": "ec2-user",
+    "ami_name": "{{user `name`}}"
+  }],
+  "provisioners":[
+    {
+      "type": "shell",
+      "inline": "sudo mkdir /usr/local/sample-app"
+    },
+    {
+      "type": "file",
+      "source": "package.tar.gz",
+      "destination": "/tmp/package.tar.gz"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "mv /tmp/package.tar.gz/ /usr/local/sample-app/package.tar.gz",
+        "sudo cd /usr/local/sample-app",
+        "sudo tar -xzf package.tar.gz",
+        "sudo chmod +x *.sh",
+        "sudo chmod +x scripts/sample-app",
+        "sudo ln -s scripts/sample-app /etc/init.d/sample-app",
+        "sudo chkconfig --add sample-app",
+        "sudo chkconfig sample-app on",
+        "sudo /etc/init.d/sample-app start"
+      ]
+    }
+  ]
+}
