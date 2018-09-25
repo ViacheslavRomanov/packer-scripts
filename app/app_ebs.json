@@ -42,12 +42,13 @@
     {
       "type": "shell",
       "inline": [
-        "mv /tmp/package.tar.gz/ /usr/local/sample-app/package.tar.gz",
-        "sudo cd /usr/local/sample-app",
+        "sudo mv /tmp/package.tar.gz /usr/local/sample-app/package.tar.gz",
+        "cd /usr/local/sample-app",
         "sudo tar -xzf package.tar.gz",
         "sudo chmod +x *.sh",
         "sudo chmod +x scripts/sample-app",
-        "sudo ln -s scripts/sample-app /etc/init.d/sample-app",
+        "sudo ln -s $(pwd)/scripts/sample-app /etc/init.d/sample-app",
+        "cd /etc/init.d",
         "sudo chkconfig --add sample-app",
         "sudo chkconfig sample-app on",
         "sudo /etc/init.d/sample-app start"
