@@ -14,14 +14,14 @@ pipeline {
         stage('Validate configuration'){
             steps {
                 dir ('base'){
-                    sh 'hcpacker validate base_ebs.json'
+                    sh 'packer validate base_ebs.json'
                 }
             }
         }
         stage('Create base image'){
             steps {
                 dir ('base'){
-                    sh 'hcpacker build base_ebs.json'
+                    sh 'packer build base_ebs.json'
                 }
             }
         }
