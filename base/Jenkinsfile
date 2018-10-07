@@ -14,14 +14,15 @@ pipeline {
         stage('Validate configuration'){
             steps {
                 dir ('base'){
-                    sh 'packer validate base_ebs.json'
+                    sh "echo ${AWS_REGION}"
+                    sh "sudo packer validate base_ebs.json"
                 }
             }
         }
         stage('Create base image'){
             steps {
                 dir ('base'){
-                    sh 'packer build base_ebs.json'
+                    sh "sudo packer build base_ebs.json"
                 }
             }
         }
