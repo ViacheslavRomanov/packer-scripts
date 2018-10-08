@@ -1,9 +1,9 @@
 {
   "variables": {
     "name": "APP_BASE_AMI",
-    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
-    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
-    "aws_region": "{{env `AWS_REGION`}}"
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "aws_region": ""
   },
   "builders": [{
     "type": "amazon-ebs",
